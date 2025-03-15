@@ -319,4 +319,11 @@ func (l *Logger) Fatal(format string, attrs ...any) {
 	os.Exit(0)
 }
 
+// Print empty line in the output stream
+func (l *Logger) Line() {
+	l.mu.Lock()
+	fmt.Fprintln(l.output)
+	l.mu.Unlock()
+}
+
 //// ========================================================

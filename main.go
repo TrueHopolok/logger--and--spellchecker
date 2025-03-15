@@ -3,9 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
+	plog "main/prettylogger"
+	spch "main/spellchecker"
 	"os"
 	"os/signal"
-	plog "spellchecker/prettylogger"
+	"strings"
 	"syscall"
 )
 
@@ -27,6 +29,7 @@ func main() {
 	}
 	defer flog.Close()
 	logger, _ := plog.NewLogger(plog.LevelInfo, flog, plog.RequireTimestamp|plog.RequireLevel, false)
+	logger.Line()
 	logger.Info("program started / logger initializated")
 
 	// Interruption alert
@@ -67,6 +70,7 @@ func main() {
 	var query string
 	fmt.Printf("Enter the word to spell check:\n>> ")
 	fmt.Scan(&query)
+	query = strings.ToLower(query)
 	logger.Info("user input is '%s', begining to find the score", query)
 
 	// Counting the score
@@ -78,7 +82,7 @@ func main() {
 			fmt.Println("Given word is spelled correctly!")
 			return
 		}
-		curScore := FindScore(word, query)
+		curScore := spch.FindScore(word, query)
 		logger.Debug("word='%s', score='%d'", word, curScore)
 		if curScore < bestScore {
 			bestScore = curScore
@@ -98,37 +102,4 @@ func main() {
 		fmt.Println(">>", word)
 	}
 	logger.Info("results outputed, program was finished")
-}
-
-func FindScore(s1, s2 string) int {
-	if s1 == s2 {
-		return 0
-	}
-	size1, size2 := len(s1)+1, len(s2)+1
-	if size1 == 1 {
-		return size2 - 1
-	}
-	if size2 == 1 {
-		return size1 - 1
-	}
-	table := make([][]int, size1)
-	for i := range size1 {
-		table[i] = make([]int, size2)
-		table[i][0] = i
-	}
-	for j := range size2 {
-		table[0][j] = j
-	}
-	for i := 1; i < size1; i++ {
-		for j := 1; j < size2; j++ {
-			table[i][j] = min(table[i][j-1], table[i-1][j]) + 1
-			if table[i][j] > table[i-1][j-1] {
-				table[i][j] = table[i-1][j-1]
-				if s1[i-1] != s2[j-1] {
-					table[i][j]++
-				}
-			}
-		}
-	}
-	return table[size1-1][size2-1]
 }

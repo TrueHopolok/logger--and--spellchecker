@@ -14,3 +14,5 @@ Contain a customly written logger with methods:
 ### `Spell checker` algorithm
 
 This is 'Damerau–Levenshtein distance' that in O(n^2) time finds a simillarity score of 2 strings. Then whole spell checker just iterates through a whole dictionary to find best matching words.
+
+Spell checker separeted into package for a better testing purposes.
