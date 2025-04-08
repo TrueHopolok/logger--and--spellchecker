@@ -3,12 +3,13 @@ package main
 import (
 	"bufio"
 	"fmt"
-	plog "main/plog"
-	spch "main/spellchecker"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
+
+	plog "github.com/TrueHopolok/logger--and--spellchecker/plog"
+	spch "github.com/TrueHopolok/logger--and--spellchecker/spellchecker"
 )
 
 const (
