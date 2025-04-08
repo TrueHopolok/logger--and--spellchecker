@@ -1,4 +1,4 @@
-package plog
+package prettylogger
 
 import (
 	"fmt"
