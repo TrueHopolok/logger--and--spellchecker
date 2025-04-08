@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	plog "main/prettylogger"
+	plog "main/plog"
 	spch "main/spellchecker"
 	"os"
 	"os/signal"
