@@ -8,8 +8,9 @@ import (
 	"strings"
 	"syscall"
 
-	plog "github.com/TrueHopolok/logger--and--spellchecker/plog"
-	spch "github.com/TrueHopolok/logger--and--spellchecker/spellchecker"
+	spch "github.com/TrueHopolok/spellchecker/spellchecker"
+
+	plog "github.com/TrueHopolok/plog"
 )
 
 const (
@@ -44,7 +45,7 @@ func main() {
 	// Opening dictionary
 	fdict, err := os.Open(dictFileName)
 	if err != nil {
-		logger.Fatal(err.Error())
+		logger.Fatal("%s", err.Error())
 	}
 	logger.Info("file '%s' was opened for reading", dictFileName)
 
@@ -54,14 +55,14 @@ func main() {
 	sdict.Split(bufio.ScanWords)
 	for sdict.Scan() {
 		dictionary[sdict.Text()] = vmem
-		logger.Debug("read: " + sdict.Text())
+		logger.Debug("%s", "read: "+sdict.Text())
 	}
 	logger.Info("all records from file '%s' have been read", dictFileName)
 
 	// Closing dictionary
 	err = fdict.Close()
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error("%s", err.Error())
 	} else {
 		logger.Info("file '%s' was closed", dictFileName)
 	}
